@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'E-Commerce Site')</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/chatbot.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
@@ -200,7 +202,19 @@
             });
         });
     </script>
-    
+
+    @include('components.chatbot-widget')
+
+    <script>
+        window.ChatbotConfig = {
+            endpoint: "{{ route('chatbot.message') }}",
+            csrf: "{{ csrf_token() }}",
+            isAuthenticated: {{ auth()->check() ? 'true' : 'false' }},
+            userName: @json(auth()->user()->name ?? null),
+            greeting: 'Besoin d’aide pour un produit, une commande ou la navigation ?'
+        };
+    </script>
+    <script src="{{ asset('js/chatbot.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>

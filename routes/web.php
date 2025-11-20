@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -16,6 +17,9 @@ Route::middleware('no-admin-store')->group(function () {
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+    // Chatbot API endpoint
+    Route::post('/chatbot/message', ChatbotController::class)->name('chatbot.message');
 });
 
 Route::middleware(['auth', 'no-admin-store'])->group(function () {
@@ -25,7 +29,7 @@ Route::middleware(['auth', 'no-admin-store'])->group(function () {
     Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
 
-    // Orders
+//orders
     Route::get('/checkout', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/checkout', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -46,3 +50,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('customers', [AdminUserController::class, 'index'])->name('customers.index');
     Route::get('customers/{user}', [AdminUserController::class, 'show'])->name('customers.show');
 });
+
+

@@ -36,7 +36,7 @@ class ProductController extends Controller
             ->take(6)
             ->get();
         $cartPreview = collect();
-
+        
         if (auth()->check()) {
             $cartPreview = Cart::with('product')
                 ->where('user_id', auth()->id())

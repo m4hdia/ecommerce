@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title', 'Authenticate') · {{ config('app.name', 'Laravel') }}</title>
+        <link href="{{ asset('css/chatbot.css') }}" rel="stylesheet">
 
         <!-- Shared authentication styles -->
         <style>
@@ -148,8 +150,8 @@
                 position: relative;
             }
 
-            .input-with-icon svg,
-            .input-with-icon i {
+            .input-with-icon > svg,
+            .input-with-icon > i {
                 position: absolute;
                 top: 50%;
                 left: 1.1rem;
@@ -173,11 +175,22 @@
                 top: 50%;
                 right: 1rem;
                 transform: translateY(-50%);
+                width: 2.25rem;
+                height: 2.25rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
                 background: none;
                 border: none;
                 color: var(--text-secondary);
                 cursor: pointer;
                 transition: var(--transition);
+            }
+
+            .password-toggle i {
+                position: static;
+                transform: none;
+                pointer-events: none;
             }
 
             .password-toggle:hover {
@@ -301,6 +314,17 @@
             @yield('content')
         </main>
 
+        @include('components.chatbot-widget')
+        <script>
+            window.ChatbotConfig = {
+                endpoint: "{{ route('chatbot.message') }}",
+                csrf: "{{ csrf_token() }}",
+                isAuthenticated: {{ auth()->check() ? 'true' : 'false' }},
+                userName: @json(auth()->user()->name ?? null),
+                greeting: 'Besoin d’aide pour vous connecter ou trouver un produit ?'
+            };
+        </script>
+        <script src="{{ asset('js/chatbot.js') }}" defer></script>
         @stack('scripts')
         <script>
             // Shared interactive touches (focus glow + staggered reveal)
