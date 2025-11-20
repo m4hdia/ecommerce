@@ -144,6 +144,94 @@ body {
     box-shadow: 0 35px 70px rgba(15, 23, 42, 0.15);
 }
 
+.catalog-sidebar .gradient-card {
+    background: linear-gradient(135deg, #f97316, #fb7185);
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: 0 30px 80px rgba(249, 115, 22, 0.35);
+}
+
+.text-white-75 {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.icon-bubble {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.18);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.icon-bubble--neutral {
+    background: #eef2ff;
+    color: #312e81;
+}
+
+.benefit-list,
+.assurance-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.benefit-list li,
+.assurance-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+    color: inherit;
+}
+
+.benefit-list li i {
+    color: #fef3c7;
+}
+
+.assurance-card {
+    border-radius: 22px;
+}
+
+.assurance-list li {
+    color: #475569;
+    font-weight: 600;
+}
+
+.assurance-list li i {
+    color: #2563eb;
+}
+
+.mini-product {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.mini-product:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.mini-product img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #f1f5f9;
+}
+
+.mini-product__info {
+    flex: 1;
+}
+
 .reset-link {
     font-weight: 600;
     color: #0ea5e9;

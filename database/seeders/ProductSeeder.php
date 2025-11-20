@@ -123,6 +123,60 @@ class ProductSeeder extends Seeder
                 'category' => 'Electronics',
                 'stock' => 60
             ],
+            [
+                'name' => 'Smart Home Projector',
+                'description' => '4K short-throw projector with auto-focus, HDR support and Wi-Fi streaming.',
+                'price' => 899.00,
+                'image' => 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=900',
+                'featured' => true,
+                'category' => 'Electronics',
+                'stock' => 25
+            ],
+            [
+                'name' => 'Nordic Knit Hoodie',
+                'description' => 'Premium cotton hoodie with minimalist silhouette and brushed interior.',
+                'price' => 89.90,
+                'image' => 'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=900',
+                'featured' => false,
+                'category' => 'Apparel',
+                'stock' => 110
+            ],
+            [
+                'name' => 'Eco Suede Chelsea Boots',
+                'description' => 'Lightweight Chelsea boots made from recycled suede with anti-slip sole.',
+                'price' => 159.50,
+                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900',
+                'featured' => true,
+                'category' => 'Footwear',
+                'stock' => 75
+            ],
+            [
+                'name' => 'Modern Ceramic Dinner Set',
+                'description' => '12-piece porcelain dinner set with matte glaze for contemporary tables.',
+                'price' => 139.00,
+                'image' => 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=900',
+                'featured' => false,
+                'category' => 'Home & Living',
+                'stock' => 90
+            ],
+            [
+                'name' => 'Focus Standing Desk',
+                'description' => 'Motorized height-adjustable desk with memory presets and cable tray.',
+                'price' => 649.00,
+                'image' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900',
+                'featured' => true,
+                'category' => 'Worklife',
+                'stock' => 40
+            ],
+            [
+                'name' => 'Botanical Skincare Ritual',
+                'description' => 'Three-step botanical kit: cleanser, toner and overnight repair mask.',
+                'price' => 119.00,
+                'image' => 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=900',
+                'featured' => false,
+                'category' => 'Beauty',
+                'stock' => 85
+            ],
         ];
 
         foreach ($products as $product) {

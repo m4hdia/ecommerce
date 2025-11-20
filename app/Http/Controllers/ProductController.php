@@ -26,8 +26,15 @@ class ProductController extends Controller
         }
 
         $products = $query->orderBy('created_at', 'desc')->get();
-        $featuredProducts = Product::where('featured', true)->take(3)->get();
-        $bestSellers = Product::orderBy('price', 'desc')->take(4)->get();
+        $featuredProducts = Product::where('featured', true)
+            ->latest('updated_at')
+            ->take(3)
+            ->get();
+
+        $bestSellers = Product::orderByDesc('featured')
+            ->orderBy('price', 'desc')
+            ->take(6)
+            ->get();
         $cartPreview = collect();
 
         if (auth()->check()) {

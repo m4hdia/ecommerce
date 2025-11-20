@@ -147,7 +147,29 @@
                     @endforelse
                 </div>
             </div>
-            <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="col-lg-4 mt-4 mt-lg-0 catalog-sidebar">
+                <div class="sidebar-highlight gradient-card text-white mb-4">
+                    <div class="icon-bubble mb-4">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Expédition express</h4>
+                    <p class="text-white-75 mb-4">Commandez avant 15h pour un traitement prioritaire et une confirmation personnalisée par notre équipe.</p>
+                    <ul class="benefit-list">
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Emballage sécurisé premium
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Suivi en temps réel
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Support 7j/7
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="fw-bold mb-3">Récapitulatif panier</h5>
@@ -176,20 +198,43 @@
                     </div>
                 </div>
 
-                <div class="card shadow-sm">
+                <div class="card shadow-sm mb-4 best-sellers-card">
                     <div class="card-body">
                         <h5 class="fw-bold mb-3">Nos best-sellers</h5>
                         @forelse($bestSellers as $product)
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="{{ $product->image ?: 'https://via.placeholder.com/80' }}" class="rounded me-3" width="60" height="60" alt="{{ $product->name }}">
-                                <div>
+                            <div class="mini-product">
+                                <img src="{{ $product->image ?: 'https://via.placeholder.com/80' }}" alt="{{ $product->name }}">
+                                <div class="mini-product__info">
                                     <p class="mb-0 fw-semibold">{{ $product->name }}</p>
                                     <small class="text-muted">{{ number_format($product->price, 2, ',', ' ') }} €</small>
                                 </div>
+                                @if($product->featured)
+                                    <span class="badge-soft">Hot</span>
+                                @endif
                             </div>
                         @empty
                             <p class="text-muted mb-0">Ajoutez des produits pour voir les tendances.</p>
                         @endforelse
+                    </div>
+                </div>
+
+                <div class="card shadow-sm assurance-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-bubble icon-bubble--neutral me-3">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Engagement qualité</h5>
+                                <p class="text-muted mb-0">Produits vérifiés, retours simplifiés et assistance dédiée.</p>
+                            </div>
+                        </div>
+                        <ul class="assurance-list">
+                            <li><i class="fas fa-box-open"></i>Stocks mis à jour chaque jour</li>
+                            <li><i class="fas fa-sync-alt"></i>Retours sous 14 jours</li>
+                            <li><i class="fas fa-headset"></i>Conseiller personnel</li>
+                        </ul>
+                        <a href="{{ route('orders.create') }}" class="btn btn-outline-dark w-100 rounded-pill mt-3">Parler à un conseiller</a>
                     </div>
                 </div>
             </div>
