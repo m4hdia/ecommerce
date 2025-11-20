@@ -2,69 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    // Register
-    public function register(Request $request)
+    public function showLoginForm(): View
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        // If using API tokens
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'User registered successfully',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+        return view('auth.login');
     }
 
-    // Login
-    public function login(Request $request)
+    public function showRegistrationForm(): View
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+        return view('auth.register');
+    }
+
+    public function register(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Invalid login credentials'
-            ], 401);
+        $attributes = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ];
+
+        if (Schema::hasColumn('users', 'role')) {
+            $attributes['role'] = 'client';
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = User::create($attributes);
 
-        return response()->json([
-            'message' => 'Login successful',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->intended($this->redirectFor($user))
+            ->with('success', 'Welcome aboard!');
     }
 
-    // Logout
-    public function logout(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-        $request->user()->tokens()->delete();
-
-        return response()->json([
-            'message' => 'Logged out successfully'
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ]);
+
+        $remember = $request->boolean('remember');
+
+        if (! Auth::attempt($credentials, $remember)) {
+            return back()->withErrors([
+                'email' => 'These credentials do not match our records.',
+            ])->onlyInput('email');
+        }
+
+        $request->session()->regenerate();
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        return redirect()->intended($this->redirectFor($user))
+            ->with('success', 'Welcome back!');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home')->with('success', 'Logged out successfully.');
+    }
+
+    protected function redirectFor(User $user): string
+    {
+        $role = $user->role ?? 'client';
+
+        return $role === 'admin'
+            ? route('admin.dashboard')
+            : route('home');
     }
 }

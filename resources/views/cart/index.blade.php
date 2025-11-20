@@ -21,9 +21,9 @@
                         <span>Articles</span>
                         <strong>{{ $cartItems->count() }}</strong>
                     </div>
-                    <div class="d-flex justify-content-between mt-2">
-                        <span>Total estimé</span>
-                        <strong>{{ number_format($total, 2, ',', ' ') }} €</strong>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span>Total estimé</span>
+                            <strong>{{ number_format($total, 2, ',', ' ') }} €</strong>
                     </div>
                     <small class="text-white-50 d-block mt-3">Taxes et frais d’expédition calculés lors de l’étape de paiement.</small>
                 </div>
@@ -71,7 +71,7 @@
                                 </form>
                                 <div class="ms-auto text-end">
                                     <p class="mb-0 text-muted small">Sous-total</p>
-                                    <h5 class="mb-0">{{ number_format($item->product->price * $item->quantity, 2, ',', ' ') }} €</h5>
+                                    <h5 class="mb-0">{{ number_format($item->price * $item->quantity, 2, ',', ' ') }} €</h5>
                                 </div>
                             </div>
                         </div>
@@ -81,9 +81,9 @@
             <div class="col-lg-4">
                 <div class="cart-summary sticky-top">
                     <h4>Résumé</h4>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Articles</span>
-                        <strong>{{ number_format($total, 2, ',', ' ') }} €</strong>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Articles</span>
+                            <strong>{{ number_format($total, 2, ',', ' ') }} €</strong>
                     </div>
                     <div class="d-flex justify-content-between mb-2 text-muted">
                         <span>Estimation frais</span>

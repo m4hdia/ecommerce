@@ -81,7 +81,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Brew Pro Coffee Maker',
                 'description' => 'Programmable pour-over system with reusable stainless filter.',
-                'price' => 169.99,b
+                'price' => 169.99,
                 'image' => 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900',
                 'featured' => false,
                 'category' => 'Home & Living',

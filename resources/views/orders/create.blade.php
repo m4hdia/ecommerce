@@ -11,7 +11,7 @@
             </div>
             <div class="col-lg-4 text-lg-end">
                 <p class="mb-1 text-uppercase small text-white-50">Total estimé</p>
-                <h2>{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2, ',', ' ') }} €</h2>
+                <h2>{{ number_format($cartItems->sum(fn($item) => $item->price * $item->quantity), 2, ',', ' ') }} €</h2>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                                     <tr>
                                         <td>{{ $item->product->name }}</td>
                                         <td class="text-center">{{ $item->quantity }}</td>
-                                        <td class="text-end">{{ number_format($item->product->price * $item->quantity, 2, ',', ' ') }} €</td>
+                                        <td class="text-end">{{ number_format($item->price * $item->quantity, 2, ',', ' ') }} €</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -52,7 +52,7 @@
                                 <tr>
                                     <td colspan="2" class="fw-bold text-end">Total</td>
                                     <td class="fw-bold text-end">
-                                        {{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2, ',', ' ') }} €
+                                        {{ number_format($cartItems->sum(fn($item) => $item->price * $item->quantity), 2, ',', ' ') }} €
                                     </td>
                                 </tr>
                             </tfoot>
@@ -71,15 +71,15 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nom complet *</label>
-                            <input type="text" name="name" class="form-control form-control-lg" value="{{ old('name') }}" required>
+                            <input type="text" name="name" class="form-control form-control-lg" value="{{ old('name', auth()->user()->name) }}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
-                            <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email') }}" required>
+                            <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email', auth()->user()->email) }}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Téléphone *</label>
-                            <input type="tel" name="phone" class="form-control form-control-lg" value="{{ old('phone') }}" required>
+                            <label class="form-label">Téléphone</label>
+                            <input type="tel" name="phone" class="form-control form-control-lg" value="{{ old('phone') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Adresse complète *</label>

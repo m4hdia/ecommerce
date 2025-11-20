@@ -11,6 +11,7 @@ return new class extends Migration
         if (! Schema::hasTable('products')) {
             return;
         }
+        
 
         if (Schema::hasColumn('products', 'featured')) {
             return;

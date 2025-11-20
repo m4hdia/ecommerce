@@ -10,7 +10,7 @@ class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'product_id', 'session_id', 'quantity'];
+    protected $fillable = ['user_id', 'product_id', 'session_id', 'quantity', 'price'];
 
     public function product()
     {
@@ -38,8 +38,8 @@ class Cart extends Model
 
         if (auth()->check()) {
             return static::where('user_id', auth()->id())->count();
-        } else {
-            return static::where('session_id', session()->getId())->count();
         }
+
+        return 0;
     }
 }

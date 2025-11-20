@@ -28,15 +28,19 @@ class ProductController extends Controller
         $products = $query->orderBy('created_at', 'desc')->get();
         $featuredProducts = Product::where('featured', true)->take(3)->get();
         $bestSellers = Product::orderBy('price', 'desc')->take(4)->get();
-        $sessionCartItems = Cart::with('product')
-            ->where('session_id', session()->getId())
-            ->get();
+        $cartPreview = collect();
+
+        if (auth()->check()) {
+            $cartPreview = Cart::with('product')
+                ->where('user_id', auth()->id())
+                ->get();
+        }
 
         return view('products.index', [
             'products' => $products,
             'featuredProducts' => $featuredProducts,
             'bestSellers' => $bestSellers,
-            'cartPreview' => $sessionCartItems,
+            'cartPreview' => $cartPreview,
         ]);
     }
 

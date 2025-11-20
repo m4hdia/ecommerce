@@ -9,12 +9,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
+    @php
+        $isAdmin = auth()->check() && auth()->user()->isAdmin();
+    @endphp
+
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">
+            <a class="navbar-brand fw-bold" href="{{ $isAdmin ? route('admin.dashboard') : route('home') }}">
                 <i class="fas fa-shopping-bag me-2"></i>E-Commerce
             </a>
             
@@ -23,23 +28,39 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
-                        <i class="fas fa-home me-1"></i>Home
-                    </a>
-                    <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
-                        <i class="fas fa-store me-1"></i>Products
-                    </a>
-                    <a class="nav-link position-relative {{ request()->routeIs('cart.*') ? 'active' : '' }}" href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        @php
-                            use App\Models\Cart;
-                            $cartCount = Cart::getCartCount();
-                        @endphp
-                        @if($cartCount > 0)
-                            <span class="cart-badge">{{ $cartCount }}</span>
-                        @endif
-                    </a>
+                <div class="navbar-nav ms-auto align-items-lg-center">
+                    @if ($isAdmin)
+                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                            <i class="fas fa-gauge me-1"></i>Dashboard
+                        </a>
+                        <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}" href="{{ route('admin.orders.index') }}">
+                            <i class="fas fa-receipt me-1"></i>Orders
+                        </a>
+                        <a class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}" href="{{ route('admin.customers.index') }}">
+                            <i class="fas fa-users me-1"></i>Customers
+                        </a>
+                    @else
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                        <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
+                            <i class="fas fa-store me-1"></i>Products
+                        </a>
+                        @auth
+                            <a class="nav-link {{ request()->routeIs('orders.index') ? 'active' : '' }}" href="{{ route('orders.index') }}">
+                                <i class="fas fa-history me-1"></i>My Orders
+                            </a>
+                        @endauth
+                        <a class="nav-link position-relative {{ request()->routeIs('cart.*') ? 'active' : '' }}" href="{{ route('cart.index') }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            @php
+                                $cartCount = \App\Models\Cart::getCartCount();
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="cart-badge">{{ $cartCount }}</span>
+                            @endif
+                        </a>
+                    @endif
                     
                     <!-- Authentication Links -->
                     @guest
@@ -55,8 +76,12 @@
                                 <i class="fas fa-user me-1"></i>{{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Orders</a></li>
+                                @if ($isAdmin)
+                                    <li><a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i class="fas fa-receipt me-2"></i>Manage orders</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.customers.index') }}"><i class="fas fa-users me-2"></i>Customers</a></li>
+                                @else
+                                    <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="fas fa-history me-2"></i>My orders</a></li>
+                                @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" 
